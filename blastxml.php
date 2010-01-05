@@ -148,6 +148,13 @@ if ($_REQUEST['op']=='submit') {
   $jobid =  false;
   $count = 0;
 
+  // Make sure we have a working directory
+  
+  if( !file_exists("work") )
+    {
+      mkdir("work") || exiterror("Failed to create work directory.");
+    }
+
   while (!$jobid && $count<10) 
     {
       $jobid = rand();
