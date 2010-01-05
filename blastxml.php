@@ -559,7 +559,9 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
 		print('<div><div class="resultsleft">');
 
 
-		print( '  <span class="hitinfo">' . $hitdef . ', ' . $hitlen . ' letters</span>');
+		print( '  <span class="hitinfo"><span>' . 
+		       preg_replace('/[^a-z0-9]/g','</span>$0<span>',$hitdef) .
+		       '</span>, ' . $hitlen . ' letters</span>');
 		print( '  <span class="hitscore">' . sprintf("%.3g",$hitscore) .'</span>');
 		print( '  <span class="hite">' . sprintf("%.3g",$hite) . '</span>');
 
