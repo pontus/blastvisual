@@ -1,0 +1,349 @@
+
+
+.bodyclass 
+{
+
+    font-family: sans-serif;
+}
+
+.blastform
+{
+
+    background: white;
+}
+
+.paramheader
+{
+    
+    font-size: 115%;
+}
+
+.paramblock
+{
+
+    border-style:none;
+    border-width:1px;
+
+    margin-left: 1em;
+    font-size: 85%;
+    float: left;
+    display: inline;
+}
+
+.syncline 
+{
+    clear: both;
+
+}
+
+.resultsleft 
+{
+    width: 37%; 
+    float: left; 
+}
+
+.resultsright 
+{
+    width: 62%;
+    float: right; 
+}
+
+
+.hspgraph
+{
+
+    float: left;
+    border-bottom: 0;
+    height: 1em;
+}
+
+/*
+ * I really w
+ *
+ */
+
+.greenarrow
+{
+    border: 1.5em solid white;
+    border-color: white green;
+}
+
+.blackarrow
+{
+    border: 1.5em solid white;
+    border-color: white black;
+}
+
+.redarrow
+{
+    border: 1.5em solid white;
+    border-color: white red;
+}
+
+.bluearrow
+{
+    border: 1.5em solid white;
+    border-color: white blue;
+}
+
+.limearrow
+{
+    border: 1.5em solid white;
+    border-color: white lime;
+}
+
+.fuchsiaarrow
+{
+    border: 1.5em solid white;
+    border-color: white fuchsia;
+}
+
+
+.rightarrow {
+
+    float: left;
+    margin-top: -0.85em;
+    border-width: 1.3em 0 1.3em 1.3em;
+    line-height: 0;
+}
+
+.leftarrow {
+    
+    float: left;
+    margin-top: -0.85em;
+    border-width: 1.3em 1.3em 1.3em 0;
+    line-height: 0;
+}
+
+.noarrow {
+    /* Placeholder for an arrow to get alignment right */;
+    
+    display: none;
+}
+
+
+.hsptext
+{
+    width: 12%;
+    font-size: 75%;
+    float: right;
+}
+
+.queryline
+{ 
+    text-align: center;
+    color: white;
+    background: green;
+    font-size: 75%;
+}
+
+.results_explanation
+{
+    font-family: sans-serif; 
+    font-size: 75%;
+}
+
+.viewhit
+{
+    text-align: center;
+    font-size: 85%;
+    background: navy;
+    float: left;
+    width: 5em;
+    padding: 0.5em;
+    margin: 4px;
+    text-decoration: none;
+    font-weight: bold;
+
+    /* Draw a white border if we're used without button */
+    border: 2px solid white;
+}
+
+.button
+{
+    border: 2px solid teal;
+}
+
+.viewhsps
+{
+    text-align: center;
+    font-size: 85%;
+    font-weight: bold;
+    padding: 0.5em;
+
+    background: navy;
+    float: right;
+
+    color: white;
+    margin-right: 0.5em;
+    width: 4em;
+}
+
+.hite 
+{
+    width: 10%;    
+    float: left;
+}
+
+.hitscore
+{
+    width: 10%;
+    float: left;
+}
+
+
+.hitinfo
+{
+    width: 65%;
+    float: left;
+}
+
+
+.before
+{
+    float: left; 
+    /* position: relative; */
+    height: 1em;    
+}
+
+.after
+{
+
+    float: left;
+    height: 1em;
+    
+}
+
+.hit
+{
+    float: left;
+    height: 1em;
+}
+
+
+
+.hitseparator 
+{
+    height: 1em;
+}
+
+.hspseparator
+{
+    height: 0.3em;
+}
+
+.hspsummary 
+{
+    margin-left: 1em;
+}
+
+.hspe
+{
+    width: 15%;
+    float: left;
+}
+
+
+.hspscore
+{
+    width: 30%;
+    float: left;
+}
+
+.hspnum
+{
+    width: 15%;
+    float: left;
+}
+
+.hspidentity
+{
+    width: 30%;
+    float: left;
+
+}
+
+.hspstrand
+{  
+    width: 10%;
+    float: left;
+}
+
+.hspcompare
+{
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+
+.hspgap
+{
+    background: red;
+}
+
+.sequence
+{
+    font-family: monospace;   
+    float: left;
+}
+
+
+.sequenceindex 
+{
+    margin-left: 5%;
+    float: left;
+    min-width: 8%;
+    max-width: 8%;
+    min-height: 0.2em;
+}
+
+.sequenceseparator 
+{
+
+    margin-bottom: 0.8em;
+}
+
+.jsonly
+{
+    display: none;
+}
+
+.hitcolumn
+{
+    border: transparent 1px;
+}
+
+.viewhit a:link
+{
+    color: white;
+    text-decoration: none;
+}
+
+.viewhit a:visited
+{
+    color: white;
+    text-decoration: none;
+}
+
+.loading
+{
+
+    clear: both;
+    font-weight: bold;
+    font-size: 200%;
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-top: 20%;
+}
+
+.nohits
+{
+
+    clear: both;
+    font-size: 120%;
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin-top: 20%;
+}
