@@ -109,8 +109,8 @@
       </div>
 
 
-      <div class="paramblock">
-	<div class ="paramheader notallprograms blastp blastx tblastn tblastx">Matrix</div>
+      <div class="paramblock  notallprograms blastp blastx tblastn tblastx">
+	<div class ="paramheader">Matrix</div>
 
 	<select name ="matrix"> 
 	  <?php
