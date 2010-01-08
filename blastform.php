@@ -134,9 +134,9 @@
 	<input type="checkbox" name="ungapped_alignment" value="F" />
       </div>
 
-      <div class="paramblock">
+      <div class="paramblock notallprograms blastx">
 	<div id="querygenetic">
-	  <div class="paramheader">Query Genetic Codes (blastx only)</div>
+	  <div class="paramheader">Query Genetic Codes</div>
 
 	  <select name ="geneticcode"> 
 	    <option value ="1"> Standard (1)</option>
@@ -156,9 +156,9 @@
 	  </select> 
 	</div>
 
-	<div id="databasegenetic">
+	<div id="databasegenetic notallprograms tblastn tblastx">
 	  <div class="paramheader">
-	    Database Genetic Codes (tblast[nx] only)
+	    Database Genetic Codes 
 	  </div>
 
 	  <select name ="dbgeneticcode"> 
