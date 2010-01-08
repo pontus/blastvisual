@@ -46,6 +46,10 @@ function toggle(id,ref,texthidden,textvisible)
 function formChange()
 {
 
+    $(".notallprograms").hide();  // Hide all options that aren't common
+    $("." +  $("#program").val()).show(); // Show all options for this tool
+
+
     // Fix the right selectable values
     $.getJSON("blastxml.php?js=1&op=dbs&program=" + $("#program").val(),
         function(data){

@@ -110,7 +110,7 @@
 
 
       <div class="paramblock">
-	<div class ="paramheader">Matrix</div>
+	<div class ="paramheader notallprograms blastp blastx tblastn tblastx">Matrix</div>
 
 	<select name ="matrix"> 
 	  <?php
