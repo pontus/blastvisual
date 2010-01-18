@@ -27,17 +27,21 @@ function toggle(id,ref,texthidden,textvisible)
     // Toggle objects selected by id, optionally, change text of ref
     // to approiate (after state change).
 
+
     $(id).toggle();
-    $("#line").attr("style").left=0;
+    //$("#line").attr("style").left=0;
+
 
     if (ref != null)
-	{	    
+	{
 	    if ($(id).is(":visible"))
 		{
 		    $(ref).html(textvisible);
 		}
 	    else
-		$(ref).html(texthidden);
+		{
+		    $(ref).html(texthidden);
+		}
 	}
 }
 
@@ -82,6 +86,8 @@ function formChange()
 
 function queryDef()
 {
+    // Get fasta query definition
+
     var s = $("#querysequence").val()
     
     if( s[0] == '>' &&                // We have a definition header and a newline
@@ -235,4 +241,42 @@ function submitForm()
     // Inhibit normal submit, we use ajax.
     return false;    
 }
+
+
+
+
+//
+
+function gbrowseCallback(gburl, data, status)
+{
+    if (status != 'success')
+    {
+	    alert("Sorry, couldn't show in gbrowse!");
+	    return;
+    }
+
+    alert("hej!");
+    window.location = gburl;  
+}
+
+function loadInGbrowse(dataurl,gburl)
+{
+    var submit={
+        add_url:    1,
+        eurl:       dataurl
+    };
+
+
+
+    $.post(gburl,submit,
+	   function (data,status) 
+	   {
+	       // Lambda function for parameter passing
+	       gbrowseCallback(gburl,data,status);
+	   }
+	  );
+}
+
+
+
 
