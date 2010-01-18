@@ -38,13 +38,13 @@
 
 .resultsleft 
 {
-    width: 37%; 
+    width: 50%; 
     float: left; 
 }
 
 .resultsright 
 {
-    width: 62%;
+    width: 49%;
     float: right; 
 }
 
@@ -194,7 +194,7 @@
 
 .hitinfo
 {
-    width: 65%;
+    width: 55%;
     float: left;
 }
 
@@ -313,17 +313,13 @@
     border: transparent 1px;
 }
 
-.viewhit a:link
+.viewhit 
 {
     color: white;
     text-decoration: none;
 }
 
-.viewhit a:visited
-{
-    color: white;
-    text-decoration: none;
-}
+
 
 .loading
 {
