@@ -8,16 +8,27 @@ $blastextraparameters = array('blastp' => ' -task blastp',
 			      'blastn' => ' -task blastn');
 
 
-$blastdbs = array('P. trichocarpa v1.1 genome',
-		  'P. trichocarpa v1.1 transcripts',
-		  'P. trichocarpa v1.1 proteins');
+$blastdbs = array( array(name =>'Populus trichocarpa v2 genome',
+			 file => 'db/nucleotide/Populus_trichocarpa.v2.masked.fa',
+			 progs => array('blastn','tblastn','tblastx')),
+		   array(name => 'Populus trichocarpa v2 transcripts',
+			 file => 'db/nucleotide/Populus_trichocarpa.v2.fa',
+			 progs => array('blastn','tblastn','tblastx')),
+		   array(name => 'Populus trichocarpa v2 peptide',
+			 file =>  'db/protein/Populus.trichocarpa.v2.0.peptide.fa',
+			 progs => array('blastp','blastx')));
 
 $matrixvalues = array('PAM30','PAM70','BLOSUM45','BLOSUM62','BLOSUM80');
 $matrixprogs = array('blastp','blastx','tblastn','tblastx');
 
-$gbrowseurl = 'http://www.popgenie.db.umu.se/cgi-bin/gbrowse/';
+$gbrowseurl = 'http://130.239.72.85/mgb2/gbrowse/popgenie';
 $gbrowseprefixes = array('Poptr1.1:');
 
+$frameshiftpenaltyprogs = array('blastx','tblastn');
+$gencodesprogs = array('blastx');
+
+
+$cdsgff = 'db/Populus.trichocarpa.v2.0.gff2';
 
 // Length of arrows in ems;
 $arrowlength = 35;
@@ -26,21 +37,12 @@ $config = array( 'blastprograms' => $blastprograms,
 		 'blastdbs' => $blastdbs,
 		 'matrixvalues' => $matrixvalues,
 		 'gbrowseurl' => $gbrowseurl,
-		 'arrowlength' => $arrowlength
+		 'arrowlength' => $arrowlength,
+		 'gencodeprogs' => $gencodesprogs,
+		 'gbrowseprefixes' => $gbrowseprefixes,
+		 'cdsgff' => $cdsgff,
+		 'frameshiftpenaltyprogs' => $frameshiftpenaltyprogs
 		 );
 
-$dbsperprog = array('blastn' => array('P. trichocarpa v1.1 genome',
-				      'P. trichocarpa v1.1 transcripts'),
-		    'blastp' => array('P. trichocarpa v1.1 proteins'),
-		    'blastx' => array('P. trichocarpa v1.1 proteins'),
-		    'tblastn' => array('P. trichocarpa v1.1 genome',
-				       'P. trichocarpa v1.1 transcripts'),
-		    'tblastx' => array('P. trichocarpa v1.1 genome',
-				       'P. trichocarpa v1.1 transcripts') );
-
-$dbtofile = array('P. trichocarpa v1.1 genome' => 'db/nucleotide/poplar.masked.fasta',
-		  'P. trichocarpa v1.1 transcripts' => 'db/nucleotide/transcripts.Poptr1_1.JamboreeModels.fasta',
-		  'P. trichocarpa v1.1 proteins' => 'db/protein/proteins.Poptr1_1.JamboreeModels.fasta'
-		  );
 
 ?>

@@ -51,12 +51,13 @@
 	 
 	 foreach ($config['blastdbs'] as $currentdb) 
 	 {
-	   if ($currentdb == $formdata['db'])
+	   if ($currentdb->name == $formdata['db'])
 	       $selected = "selected='selected' ";
 	     else
 	       $selected = "";
 
-	   print "<option value='$currentdb' $selected>$currentdb</option> \n";
+	   print "<option value='" . $currentdb->name . 
+	     "' $selected> " . $currentdb->name . "</option> \n";
 	 }
 
 	 print "</select>\n\n\n";
@@ -156,7 +157,7 @@
 	  </select> 
 	</div>
 
-	<div id="databasegenetic notallprograms tblastn tblastx">
+	<div id="databasegenetic" class="notallprograms tblastn tblastx">
 	  <div class="paramheader">
 	    Database Genetic Codes 
 	  </div>
@@ -179,8 +180,8 @@
 
 	</div>
 
-	<div id="frameshift">
-	  <div class="paramheader">Frame shift penalty for blastx</div>
+	<div id="frameshift" class="notallprograms blastx tblastn">
+	  <div class="paramheader">Frame shift penalty</div>
 	  <select name ="oofalign"> 
 	   <?php
 	{
@@ -239,4 +240,6 @@
 
   </form>
 
+
 </div>
+<hr />

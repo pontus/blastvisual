@@ -63,9 +63,11 @@ if ($_REQUEST['op'] == 'dbs' && $_REQUEST['js'] != '' && $_REQUEST['program'] !=
     // Return an object with the program (string) and dbs (array).    
     $result = '{ "program":"' . $_REQUEST['program'] . '", "dbs": [' ;
 
+    $dbs = dbs_per_prog($_REQUEST['program']);
+
     // Build a list of all the dbs: "dbname",
     $dbstring = "";
-    foreach($dbsperprog[$_REQUEST['program']] as $db)
+    foreach($dbs as $db)
       {		
 	$dbstring = $dbstring . "\n\"$db\",";
       }
@@ -85,7 +87,10 @@ if ($_REQUEST['op'] == 'dbs' && $_REQUEST['js'] != '' && $_REQUEST['program'] !=
 
 if ($_REQUEST['op'] == 'loaded' && $_REQUEST['js'] != '')
   {
-    if ($xmlstr != '')
+    // Errors?
+    $s = stat('work/errors_' . $_REQUEST['id']);
+	
+    if ($s['size'] || $xmlstr != '')
       print("1");
     else
       print("0");
@@ -120,14 +125,18 @@ if ($_REQUEST['op'] == 'loaded' && $_REQUEST['js'] == '')
 
 // Do we want to actually output the whole page?
 
-if ($_REQUEST['js'] == '' && $_REQUEST['op'] != 'submit')  {
-  print(file_get_contents('blast_header.template.html'));
- }
+if ($_REQUEST['js'] == '' && 
+    $_REQUEST['op'] != 'submit' &&
+    $_REQUEST['op'] != 'gbrowse') 
+  {
+    print(file_get_contents('blast_header.template.html'));
+  }
 
 
 if ( $_REQUEST['js'] == '' &&
      $_REQUEST['op'] != 'submit' &&
-     $_REQUEST['op'] != 'loaded')
+     $_REQUEST['op'] != 'loaded' &&
+     $_REQUEST['op'] != 'gbrowse')
 
   {    
     include 'blastform.php';
@@ -179,8 +188,9 @@ if ($_REQUEST['op']=='submit') {
     exiterror("Illegal data for program");
 
   if ( !in_array( $_REQUEST['db'],
-		  $blastdbs ))
-    exiterror("Illegal data for db");
+		  dbs_per_prog($_REQUEST['program'])))
+    exiterror("Unsuitable db " . $_REQUEST['db'] . 
+	      " for program " . $_REQUEST['program']);
   
   if ( !in_array( $_REQUEST['matrix'],
 		  $matrixvalues ))
@@ -242,13 +252,34 @@ if ($_REQUEST['op']=='submit') {
   if ($_FILES['dbfile']['size'] > 0) 
     $dbopt = ' -subject ' . $_FILES['dbfile']['tmp_name'];
   else
-    $dbopt = ' -db ' . $dbtofile[$_REQUEST['db']];
+    $dbopt = ' -db ' . db_name_to_file($_REQUEST['db']);
 
   $matrix = "";
   if (in_array($_REQUEST['program'], $matrixprogs))
     {
       $matrix = " -matrix " . $_REQUEST['matrix'];
     }
+
+  $frameshiftpenalty = "";
+  if (in_array($_REQUEST['program'], $frameshiftpenaltyprogs))
+    {
+      $frameshiftpenalty = " -frame_shift_penalty " . $_REQUEST['oofalign'];
+    }
+
+  $gencodes = "";
+  if (in_array($_REQUEST['program'], $gencodesprogs))
+    {
+      $gencodes = " -query_gencode " . $_REQUEST['geneticcode'] .
+	" -query_gencode " . $_REQUEST['dbgeneticcode'];
+    }
+    
+
+  $ungapped = "";
+  if ($_REQUEST['ungapped_alignment'] == '')
+    {
+      $ungapped = " -ungapped ";
+    }
+
 
   $cmd = $_REQUEST['program'] .                 // What to run
     //    " -m7 -O work/blastoutput_$jobid ".         // XML output
@@ -260,6 +291,9 @@ if ($_REQUEST['op']=='submit') {
     " -outfmt 5 -out work/blastoutput_$jobid " .
     " -num_alignments " . intval($_REQUEST['alignments']) .
     $matrix . 
+    $gencodes .
+    $frameshiftpenalty .
+    $ungapped .
     " -evalue " . doubleval($_REQUEST['expect']) .
     " -query work/blastinput_$jobid " .
     $dbopt .                                         // DB/Subject
@@ -277,6 +311,142 @@ if ($_REQUEST['op']=='submit') {
 
 
 
+
+/******************************
+ *
+ * Gbrowse
+ ******************************/
+
+if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
+
+  // Handle gbrowse track
+
+  // Output gff describing the selected hit
+
+  $hitnum = $_REQUEST['hitnum'];
+  if ($hitnum == '')
+    exiterror('Missing hitnum for Gbrowse.');
+
+  // Make up a unique id.
+  $id = "search_" . $_REQUEST['id'] . '_' . $hitnum;
+  $qid = "query" . $_REQUEST['id'];
+
+  foreach($xml->BlastOutput_iterations->Iteration as $iter) 
+    {
+      foreach ($iter->Iteration_hits->Hit as $hit) 
+	{
+	  if ( $hitnum == $hit->Hit_num )
+	    {
+	      // Found the right hit.
+
+
+	      // Fix up reference
+	      $ref = $hit->Hit_def;
+	      
+	      foreach ($gbrowseprefixes as $prefix)
+		{
+		  // Remove prefixes in array
+		  if(strncmp($ref,$prefix,strlen($prefix)) === 0)
+		    {
+		      // We have a prefix? Remove it
+		      $ref = substr($ref,strlen($prefix));
+		    }
+		}
+	      
+	      
+	      $parts = '';
+
+	      
+	      $tmp =  $xml->xpath('BlastOutput_query-len');  // Suitable starting point for min
+	      $qmatchstart =(int) $tmp[0];
+	      $qmatchend = 0;                                
+
+	      $hmatchstart = (int) $hit->Hit_len;
+	      $hmatchend = 0;                                
+
+
+	      foreach($hit->Hit_hsps->Hsp as $hsp)
+		{
+		  $qf = $hsp->xpath('Hsp_query-from');
+		  if ($qf[0] < $qmatchstart)
+		    $qmatchstart = (int) $qf[0];
+		  
+		  $qt = $hsp->xpath('Hsp_query-to');
+		  if ($qt[0] > $qmatchend)
+		    $qmatchend = (int) $qt[0];
+
+
+		  $hf = $hsp->xpath('Hsp_hit-from');
+		  if ($hf[0] < $hmatchstart)
+		    $hmatchstart = (int) $hf[0];
+
+		  $ht = $hsp->xpath('Hsp_hit-to');
+		  if ($ht[0] > $hmatchend)
+		    $hmatchend = (int) $ht[0];
+
+		  $parts = $parts . 
+		    "$qid" . 
+		    "\t" . 
+		    "PopGenie" . 
+		    "\t" . 
+		    "match_part" .
+		    "\t" . 
+		    $qf[0] .
+		    "\t" . 
+		    $qt[0] .
+		    "\t" .
+		    $hsp->{Hsp_score} .
+		    "\t" . 
+		    "?" .  // Strand, FIXME XXX
+		    "\t" .
+		    "." .
+		    "\t" .
+		    "ID=${id}_" . (int) $hsp->{Hsp_num} . ";Parent=$id;Target=$ref " .
+                    $hf[0] . 
+		    " " .
+		    $ht[0] .
+		    "\n";
+							  
+									    
+		}
+	      
+
+	      // Ok, created all the parts and collected the lengths
+	      
+	      print ("##gff-version\t3\n");
+
+	      print("$qid" .
+		    "\t" . 
+		    "PopGenie" .
+		    "\t" .
+		    "match" . 
+		    "\t" .
+		    $qmatchstart . 
+		    "\t" .
+		    $qmatchend .
+		    "\t" . 
+		    "." . 
+		    "\t" .
+		    "." .
+		    "\t" .
+		    "." . 
+		    "\t" .
+		    "ID=$id;Name=" . $hit->Hit_def . ";Note=Showing PopGenie alignment;Target=$ref" .
+		    " " . 
+		    $hmatchstart . 
+		    " " .
+		    $hmatchend . "\n");
+	      print($parts);
+	      
+	    }		
+	}
+    }
+  
+  exit();
+ };
+
+
+
 /******************************
  * "Illustration" track
  *
@@ -289,7 +459,26 @@ if ($_REQUEST['op']=='submit') {
 if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
   {
 
+    
+    // Handle error case first.
+
+    if (!$xml)
+      {
+	$s = stat('work/errors_' . $_REQUEST['id']);
+	
+	if ($s['size'] > 0)
+	  {
+	      print("<pre>" . 
+		    file_get_contents('work/errors_'. $_REQUEST['id'] ) .
+
+		    "</pre>");  
+
+	  }
+
+      }
+
     // Do we have any hits in the output?
+
     if ( !$xml->BlastOutput_iterations->Iteration->Iteration_hits->Hit )
       {
 	print("<div class='nohits'>Sorry, no hits. Try modifying your search parameters!</div>");
@@ -302,8 +491,12 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
 	print("Tool: <a href=\"${blasturl}\">" . $xml->BlastOutput_program . " (" . 
 	     $xml->BlastOutput_version . ")</a><br/>");
     
-	print("DB: " . $xml->BlastOutput_db . " <br/>");
-	print("Query length :" . $xml->{BlastOutput_query-len} .'<br/>');
+	print("DB: " . db_file_to_name($xml->BlastOutput_db) . " <br/>");
+
+
+
+	$ql = $xml->xpath('BlastOutput_query-len');
+	print("Query length: " . $ql[0] .' letters<br/>');
 
 	$host  = $_SERVER['HTTP_HOST'];
 	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -318,7 +511,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
 
 
 
-	foreach($xml->BlastOutput_iterations->Iteration as $iter) 
+ 	foreach($xml->BlastOutput_iterations->Iteration as $iter) 
 	  {
 
 	    // Seems we can't access this the normal way
@@ -334,10 +527,12 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
 		  "  <span class='hitinfo'>Definition</span> \n" .
 		  "  <span class='hitscore'>Score</span> \n" .
 		  "  <span class='hite'>E</span> \n" .
+		  "  <span class='button viewhsps' style='visibility: hidden;' ></span> \n" .
+		  "  <span class='viewhit button' style='visibility: hidden;' >Gbrowse</span> \n" .
 		  "</div>\n\n" .	  
 		  // Right side
 		  "<div class='resultsright'> \n" .
-		  "  <div class='viewhit' style='visibility: hidden;' ></div> \n" .
+
 		  "  <div class='leftarrow noarrow'></div> \n" .  // Offset "query" so we have room for an arrow on the left
 		  "  <div class='hspgraph' style='width: {$config['arrowlength']}em;'  >  \n" .
 		  "     <div class='queryline'>Query</div>  \n" .
@@ -454,29 +649,6 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
 		    //Create right hand graph code.
 		
 		
-		    // gbrowse button
-		    if ($config['gbrowseurl'] != '' )
-		      {
-			$ref = $hitdef;
-
-			foreach ($gbrowseprefixes as $prefix)
-			  {
-			    // Remove prefixes in array
-			    if(strncmp($ref,$prefix,strlen($prefix)) === 0)
-			      {
-				// We have a prefix? Remove it
-				$ref = substr($ref,strlen($prefix));
-			      }
-			  }
-
-			// Direct link to hit
-			$rs = $rs . 
-			  "  <span class='viewhit button'> \n".
-			  "    <a href='" . 
-			  $config['gbrowseurl'] .
-			  "?start=$hitfrom;stop=$hitto;ref=$ref" .
-			  "'>GBrowse</a></span>";
-		      }
 
 		    // Believe it or not, this is much more readable with variables inlined...
 		    //
@@ -567,10 +739,26 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
 
 
 
-		print('  <span class="viewhsps button jsonly" id="showhsps' . $hitnum . 
-		      '" onclick="toggle(\'.hsps' . $hitnum .
-		      '\',\'#showhsps' . $hitnum 
-		      .'\',\'Show HSPs\',\'Hide HSPs\')">Show HSPs</span>');
+		print("  <span class='viewhsps button jsonly' id='showhsps${hitnum}' " .
+		      " onclick=\"toggle('.hsps$hitnum','#showhsps${hitnum}'," .
+		      "'Show HSPs','Hide HSPs')\">Show HSPs</span>");
+
+
+
+
+		// gbrowse button
+		if ($config['gbrowseurl'] != '' )
+		  {
+		    // Direct link to hit
+		    print("  <span class='viewhit jsonly button' onclick='loadInGbrowse(\"" .
+			  "http://$host$uri/blastxml.php?op=gbrowse&amp;id=${_REQUEST['id']}&amp;hitnum=$hitnum" .
+			  '","' .
+			  $config['gbrowseurl'] . "\")'>\n".
+			  "GBrowse</span>");
+		  }
+
+
+
 		print('<div class="syncline"></div>' );
 		print('</div>');  // Closes resultsleft
 
