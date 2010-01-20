@@ -323,6 +323,9 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
   // Output gff describing the selected hit
 
+
+  header("Content-type: text/plain");
+
   $hitnum = $_REQUEST['hitnum'];
   if ($hitnum == '')
     exiterror('Missing hitnum for Gbrowse.');
@@ -354,90 +357,42 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		}
 	      
 	      
-	      $parts = '';
-
-	      
-	      $tmp =  $xml->xpath('BlastOutput_query-len');  // Suitable starting point for min
-	      $qmatchstart =(int) $tmp[0];
-	      $qmatchend = 0;                                
-
-	      $hmatchstart = (int) $hit->Hit_len;
-	      $hmatchend = 0;                                
 
 
+
+	      print "[UserBlast]\n" .
+		"glyph=segments\n" .
+		"strand_arrow=1\n\n";
+
+
+	      $parts = "reference=$ref\n" .
+		'"UserBlast" "' . $hit->Hit_def . '" ' ;
+
+	      $first = 1;
 	      foreach($hit->Hit_hsps->Hsp as $hsp)
 		{
-		  $qf = $hsp->xpath('Hsp_query-from');
-		  if ($qf[0] < $qmatchstart)
-		    $qmatchstart = (int) $qf[0];
-		  
-		  $qt = $hsp->xpath('Hsp_query-to');
-		  if ($qt[0] > $qmatchend)
-		    $qmatchend = (int) $qt[0];
+
+		  // Insert starting comma if needed
+		  if (!$first)
+		    $parts = $parts . ',';
+
+		  $first = 0;
 
 
 		  $hf = $hsp->xpath('Hsp_hit-from');
-		  if ($hf[0] < $hmatchstart)
-		    $hmatchstart = (int) $hf[0];
 
 		  $ht = $hsp->xpath('Hsp_hit-to');
-		  if ($ht[0] > $hmatchend)
-		    $hmatchend = (int) $ht[0];
 
 		  $parts = $parts . 
-		    "$qid" . 
-		    "\t" . 
-		    "PopGenie" . 
-		    "\t" . 
-		    "match_part" .
-		    "\t" . 
-		    $qf[0] .
-		    "\t" . 
-		    $qt[0] .
-		    "\t" .
-		    $hsp->{Hsp_score} .
-		    "\t" . 
-		    "?" .  // Strand, FIXME XXX
-		    "\t" .
-		    "." .
-		    "\t" .
-		    "ID=${id}_" . (int) $hsp->{Hsp_num} . ";Parent=$id;Target=$ref " .
-                    $hf[0] . 
-		    " " .
-		    $ht[0] .
-		    "\n";
-							  
+		    $hf[0] . '..' . $ht[0];
 									    
 		}
 	      
 
 	      // Ok, created all the parts and collected the lengths
 	      
-	      print ("##gff-version\t3\n");
-
-	      print("$qid" .
-		    "\t" . 
-		    "PopGenie" .
-		    "\t" .
-		    "match" . 
-		    "\t" .
-		    $qmatchstart . 
-		    "\t" .
-		    $qmatchend .
-		    "\t" . 
-		    "." . 
-		    "\t" .
-		    "." .
-		    "\t" .
-		    "." . 
-		    "\t" .
-		    "ID=$id;Name=" . $hit->Hit_def . ";Note=Showing PopGenie alignment;Target=$ref" .
-		    " " . 
-		    $hmatchstart . 
-		    " " .
-		    $hmatchend . "\n");
-	      print($parts);
-	      
+	      print ("$parts\n");
+     
 	    }		
 	}
     }
@@ -486,17 +441,17 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
     else
       {
 	// Misc. info about the query
-	print('<div class="syncline"></div>'
-	      . '<div class="queryinfo">');
+	print("<div class='syncline'></div>\n"
+	      . "<div class='queryinfo'>\n");
 	print("Tool: <a href=\"${blasturl}\">" . $xml->BlastOutput_program . " (" . 
-	     $xml->BlastOutput_version . ")</a><br/>");
+	     $xml->BlastOutput_version . ")</a><br/>\n");
     
-	print("DB: " . db_file_to_name($xml->BlastOutput_db) . " <br/>");
+	print("DB: " . db_file_to_name($xml->BlastOutput_db) . " <br/>\n\n");
 
 
 
 	$ql = $xml->xpath('BlastOutput_query-len');
-	print("Query length: " . $ql[0] .' letters<br/>');
+	print("Query length: " . $ql[0] ." letters<br/>\n");
 
 	$host  = $_SERVER['HTTP_HOST'];
 	$uri   = rtrim(dirname($_SERVER['PHP_SELF']), '/\\');
@@ -504,10 +459,10 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']='render' )
 	$thisurl ="http://$host$uri/$extra";
 
 
-	print("Link to these results: <a href=\"$thisurl\">$thisurl</a><br/>");
-	print('</div>');
-	print('<div class="syncline hitseparator"></div>');
-	print('<div class="results_explanation">');
+	print("Link to these results: <a href=\"$thisurl\">$thisurl</a><br/>\n\n");
+	print("</div>\n");
+	print("<div class='syncline hitseparator'></div>\n");
+	print("<div class='results_explanation'>\n");
 
 
 
