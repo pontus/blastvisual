@@ -242,4 +242,4 @@
 
 
 </div>
-<hr />
+<hr class="syncline"/>
