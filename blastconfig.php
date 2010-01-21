@@ -10,18 +10,21 @@ $blastextraparameters = array('blastp' => ' -task blastp',
 
 $blastdbs = array( array(name =>'Populus trichocarpa v2 genome',
 			 file => 'db/nucleotide/Populus_trichocarpa.v2.masked.fa',
+			 adjustcoordinates => true,
 			 progs => array('blastn','tblastn','tblastx')),
 		   array(name => 'Populus trichocarpa v2 transcripts',
 			 file => 'db/nucleotide/Populus_trichocarpa.v2.fa',
+			 adjustcoordinates => true,
 			 progs => array('blastn','tblastn','tblastx')),
 		   array(name => 'Populus trichocarpa v2 peptide',
 			 file =>  'db/protein/Populus.trichocarpa.v2.0.peptide.fa',
+			 adjustcoordinates => true,
 			 progs => array('blastp','blastx')));
 
 $matrixvalues = array('PAM30','PAM70','BLOSUM45','BLOSUM62','BLOSUM80');
 $matrixprogs = array('blastp','blastx','tblastn','tblastx');
 
-$gbrowseurl = 'http://130.239.72.85/mgb2/gbrowse/popgenie';
+$gbrowseurl = 'http://130.239.72.85/mgb2/gbrowse/popgeniev2';
 $gbrowseprefixes = array('Poptr1.1:');
 
 $frameshiftpenaltyprogs = array('blastx','tblastn');

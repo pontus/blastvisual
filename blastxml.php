@@ -330,6 +330,8 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
   if ($hitnum == '')
     exiterror('Missing hitnum for Gbrowse.');
 
+  $adjust = db_adjust_coords($xml->BlastOutput_db);
+
   // Make up a unique id.
   $id = "search_" . $_REQUEST['id'] . '_' . $hitnum;
   $qid = "query" . $_REQUEST['id'];
@@ -374,17 +376,31 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 		  // Insert starting comma if needed
 		  if (!$first)
-		    $parts = $parts . ',';
+		    {
+		      $parts = $parts . ',';
+		    }
 
+		  
 		  $first = 0;
 
 
 		  $hf = $hsp->xpath('Hsp_hit-from');
-
 		  $ht = $hsp->xpath('Hsp_hit-to');
 
+		  $from = $hf[0];
+		  $to = $ht[0];
+
+		  if($adjust)
+		    {
+		      // Adjust coordinates per gff file?
+
+		      $from = transform_coordinates($ref,$from);
+		      $to = transform_coordinates($ref,$to);
+		    }
+
+
 		  $parts = $parts . 
-		    $hf[0] . '..' . $ht[0];
+		    $from . '..' . $to;
 									    
 		}
 	      
