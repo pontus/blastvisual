@@ -407,14 +407,18 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 			  // split this hsp.
 
 			  // Insert an extra HSP from from to the end of it's extron
-			  $upper = extron_limits($gene,$from)[1];
-			  $parts = $parts . $from . '..' . $upper . ',';
+			  $upper = extron_limits($gene,$from);
+
+			  // FIXME: Handle case "not found" (false)
+
+			  $parts = $parts . $from . '..' . $upper[1] . ',';
 
 			  // FIXME: We should probably check and insert HSPs for any
 			  // extron in between.
 
 			  // Set $from to the start of the extron $to belongs to.
-			  $from = extron_limits($gene,$to)[0];
+			  $tmp = extron_limits($gene,$to);
+			  $from = $tmp[0];
 			}
 		    }
 

@@ -162,7 +162,7 @@ function extron_limits($gene, $offseted_coord)
   foreach($cdses as $current_cds)
     {
       if (($offseted_coord >= $current_cds[0]) &&
-	  ($offseted_coord =< $current_cds[1]))
+	  ($offseted_coord <= $current_cds[1]))
 
 	return $current_cds;
     }
