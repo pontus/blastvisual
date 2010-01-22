@@ -10,7 +10,7 @@ $blastextraparameters = array('blastp' => ' -task blastp',
 
 $blastdbs = array( array(name =>'Populus trichocarpa v2 genome',
 			 file => 'db/nucleotide/Populus_trichocarpa.v2.masked.fa',
-			 adjustcoordinates => true,
+			 adjustcoordinates => false,
 			 progs => array('blastn','tblastn','tblastx')),
 		   array(name => 'Populus trichocarpa v2 transcripts',
 			 file => 'db/nucleotide/Populus_trichocarpa.v2.fa',
