@@ -394,8 +394,28 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		    {
 		      // Adjust coordinates per gff file?
 
+		      $diff = $to-$from;
+
 		      $from = transform_coordinates($ref,$from);
 		      $to = transform_coordinates($ref,$to);
+
+		      // Compare distance, if it has changed, introns interfere.
+
+		      if (($to-$from) != $diff) 
+			{
+			  // We cross at least one extron/intron border. Let's
+			  // split this hsp.
+
+			  // Insert an extra HSP from from to the end of it's extron
+			  $upper = extron_limits($gene,$from)[1];
+			  $parts = $parts . $from . '..' . $upper . ',';
+
+			  // FIXME: We should probably check and insert HSPs for any
+			  // extron in between.
+
+			  // Set $from to the start of the extron $to belongs to.
+			  $from = extron_limits($gene,$to)[0];
+			}
 		    }
 
 
