@@ -24,6 +24,9 @@ $blastdbs = array( array(name =>'Populus trichocarpa v2 genome',
 $matrixvalues = array('PAM30','PAM70','BLOSUM45','BLOSUM62','BLOSUM80');
 $matrixprogs = array('blastp','blastx','tblastn','tblastx');
 
+// Gbrowse probably needs to run on the same "host" (from the browsers
+// point of view) for ajaxy reasons.
+
 $gbrowseurl = 'http://130.239.72.85/mgb2/gbrowse/popgeniev2';
 $gbrowseprefixes = array('Poptr1.1:');
 
