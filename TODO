@@ -1,0 +1,22 @@
+
+* Cluster hsps for gbrowse
+
+* Support for other blasts (move parameters to configuration?)
+
+* Move coloring to configuration?
+
+* Currently, we miss included extrons when we split HSPs, fix that.
+
+* Move "advanced" option to configuration. (Operator should be able to
+  choose what they want to offer).
+
+* Configurable work directory
+
+* Cleaning function? (files in work directory older than N days)
+
+* Refactor, move stuffs to their own functions
+
+* Rewrap supplied sequence for the textarea so it displays nicer.
+
+* Operator documentation
+
