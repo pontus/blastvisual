@@ -255,7 +255,6 @@ function gbrowseCallback(gburl, data, status)
 	    return;
     }
 
-    alert("hej!");
     window.location = gburl;  
 }
 
@@ -266,7 +265,8 @@ function loadInGbrowse(dataurl,gburl)
         eurl:       dataurl
     };
 
-
+    $("#cover").show();
+    $("#infobox").show();
 
     $.post(gburl,submit,
 	   function (data,status) 

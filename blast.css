@@ -343,3 +343,32 @@
     display: block;
     margin-top: 20%;
 }
+
+.gbrowseloading
+{
+    display: none;
+    left:200px;
+    top:200px;
+    width:20em;
+    height:10em;
+    position:absolute;
+    z-index:100;
+    background:white;
+    padding:1em;
+    border:1px solid gray;
+}
+
+.hide
+{
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    background: gray;
+    filter: alpha(Opacity=50);
+    opacity: 0.5;
+    -moz-opacity: 0.5;
+    -khtml-opacity: 0.5;
+}
