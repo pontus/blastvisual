@@ -157,7 +157,7 @@
 	  </select> 
 	</div>
 
-	<div id="databasegenetic" class="notallprograms tblastn tblastx">
+	<div id="databasegenetic" class="notallprograms tblastx tblastn">
 	  <div class="paramheader">
 	    Database Genetic Codes 
 	  </div>

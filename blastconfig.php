@@ -31,7 +31,8 @@ $gbrowseurl = 'http://130.239.72.85/mgb2/gbrowse/popgeniev2';
 $gbrowseprefixes = array('Poptr1.1:');
 
 $frameshiftpenaltyprogs = array('blastx','tblastn');
-$gencodesprogs = array('blastx');
+$querygencodesprogs = array('blastx','tblastx');
+$dbgencodesprogs = array('tblastx','tblastn');
 
 
 $cdsgff = 'db/Populus.trichocarpa.v2.0.gff2';
@@ -44,7 +45,8 @@ $config = array( 'blastprograms' => $blastprograms,
 		 'matrixvalues' => $matrixvalues,
 		 'gbrowseurl' => $gbrowseurl,
 		 'arrowlength' => $arrowlength,
-		 'gencodeprogs' => $gencodesprogs,
+		 'querygencodeprogs' => $querygencodesprogs,
+		 'dbgencodeprogs' => $dbgencodesprogs,
 		 'gbrowseprefixes' => $gbrowseprefixes,
 		 'cdsgff' => $cdsgff,
 		 'frameshiftpenaltyprogs' => $frameshiftpenaltyprogs

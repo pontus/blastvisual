@@ -267,12 +267,17 @@ if ($_REQUEST['op']=='submit') {
     }
 
   $gencodes = "";
-  if (in_array($_REQUEST['program'], $gencodesprogs))
+  if (in_array($_REQUEST['program'], $querygencodesprogs))
     {
-      $gencodes = " -query_gencode " . $_REQUEST['geneticcode'] .
-	" -query_gencode " . $_REQUEST['dbgeneticcode'];
+      $gencodes = " -query_gencode " . $_REQUEST['geneticcode'];
+
     }
-    
+
+  if (in_array($_REQUEST['program'], $dbgencodesprogs))
+    {
+      $gencodes = $gencodes . " -db_gencode " . $_REQUEST['dbgeneticcode'];    
+
+    }
 
   $ungapped = "";
   if ($_REQUEST['ungapped_alignment'] == 'F')
