@@ -275,7 +275,7 @@ if ($_REQUEST['op']=='submit') {
     
 
   $ungapped = "";
-  if ($_REQUEST['ungapped_alignment'] == '')
+  if ($_REQUEST['ungapped_alignment'] == 'F')
     {
       $ungapped = " -ungapped ";
     }
