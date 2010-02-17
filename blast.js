@@ -255,7 +255,11 @@ function gbrowseCallback(gburl, data, status)
 	    return;
     }
 
-    window.location = gburl;  
+    $("#cover").hide();
+    $("#infobox").hide();
+
+    var newWindow = window.open(gburl, '_blank');
+    newWindow.focus();
 }
 
 function loadInGbrowse(dataurl,gburl)
