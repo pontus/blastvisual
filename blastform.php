@@ -129,7 +129,7 @@
 	</select> 
       </div>
 
-      <div class="paramblock">
+      <div class="paramblock notallprograms blastn blastp tblastn">
 	<div class="paramheader">Perform ungapped alignment</div>
 
 	<input type="checkbox" name="ungapped_alignment" value="F" />
