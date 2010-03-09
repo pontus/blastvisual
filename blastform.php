@@ -185,10 +185,9 @@
 	  <select name ="oofalign"> 
 	   <?php
 	{
-	  $oofs = array(6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,50,1000,0);
-	  $default = $formdata['oofalign'] ? $formdata['oofalign'] : 0;
+	  $oofs = array(1,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,25,30,50,1000,0);
+	  $default = $formdata['oofalign'] ? $formdata['oofalign'] : 1;
 
-	  $extra = array(0=>'(no OOF)');
 
 	  foreach($oofs as $currentoof)
 	  {
