@@ -401,8 +401,8 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 		      $diff = $to-$from;
 
-		      $from = transform_coordinates($ref,$from);
-		      $to = transform_coordinates($ref,$to);
+		      $from = transform_coordinate($ref,$from);
+		      $to = transform_coordinate($ref,$to);
 
 		      // Compare distance, if it has changed, introns interfere.
 
