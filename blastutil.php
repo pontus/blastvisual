@@ -78,19 +78,48 @@ function parse_gfffile($gene)
   
   $cdsforgene = $gene;
   $cdses = array();
-  
-  // For each line in file
-  foreach ($f as $line) 
+
+  $ids = array($gene);
+  $oldids = 0;
+
+  while($ids != $oldids)
     {
-      // Tab separated
-      $l = explode("\t", $line);
-      
-      if ($l[0] == $gene && $l[2] == 'CDS') // This line matters to us?
+      $oldids = $ids;
+
+      // For each line in file
+      foreach ($f as $line) 
 	{
-	  $cdses[] = array_slice($l,3,2);  
+	  foreach ($ids as $id)
+	    {
+	      // Go through all IDs we have and check if we have a matching line
+	      if (preg_match("(Name|Parent|ID)=$id",$line) > 0)
+		{
+		  // Get ID
+		  $matches = array();
+		  preg_match("ID=[^;]*"$line,$matches);
+		  
+		  $newid = substr($matches[0],3);
+
+		  if (!in_array($newid, $ids))
+		    {
+		      $ids[] = $newid;
+		    }
+
+		  // Tab separated
+		  $l = explode("\t", $line);
+		  
+		  if ($l[0] == $gene && $l[2] == 'CDS') // This line matters to us?
+		    {
+		      $cdses[] = array_slice($l,3,2);  
+		    }
+		  
+		}
+	      
+	    }
+      
 	}
     }
-  
+
   function cmp($a, $b)
   {
     // Normal handling of first index
