@@ -98,7 +98,6 @@ function parse_gfffile($gene)
 		  // Get ID
 		  $matches = array();
 		  preg_match("ID=[^;]*",$line,$matches);
-		  
 		  $newid = substr($matches[0],3);
 
 		  if (!in_array($newid, $ids))
@@ -113,11 +112,8 @@ function parse_gfffile($gene)
 		    {
 		      $cdses[] = array_slice($l,3,2);  
 		    }
-		  
 		}
-	      
-	    }
-      
+	    } 
 	}
     }
 
