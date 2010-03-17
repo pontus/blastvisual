@@ -15,12 +15,13 @@ function exiterror($s)
 }
 
 
-function db_adjust_coords($f)
+function db_adjust_coords($s)
 {
   global $config;
 
   foreach ($config['blastdbs'] as $currentdb) 
     {
+
       if ($currentdb['file'] == $s)
 	return $currentdb['adjustcoordinates'];
     }
