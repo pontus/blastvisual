@@ -93,11 +93,11 @@ function parse_gfffile($gene)
 	  foreach ($ids as $id)
 	    {
 	      // Go through all IDs we have and check if we have a matching line
-	      if (preg_match("(Name|Parent|ID)=$id",$line) > 0)
+	      if (preg_match("/(Name|Parent|ID)=$id/",$line) > 0)
 		{
 		  // Get ID
 		  $matches = array();
-		  preg_match("ID=[^;]*",$line,$matches);
+		  preg_match("/ID=[^;]*/",$line,$matches);
 		  $newid = substr($matches[0],3);
 
 		  if (!in_array($newid, $ids))
