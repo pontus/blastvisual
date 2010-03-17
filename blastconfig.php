@@ -39,7 +39,7 @@ $querygencodesprogs = array('blastx','tblastx');
 $dbgencodesprogs = array('tblastx','tblastn');
 
 
-$cdsgff = 'db/Populus.trichocarpa.v2.0.gff2';
+$cdsgff = 'db/Ptrichocarpa_129_gene.gff3';
 
 // Length of arrows in ems;
 $arrowlength = 35;
