@@ -442,7 +442,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 	      // Ok, created all the parts and collected the lengths, now output (after adjusting reference)
 	      
-	      print (str_replace("%ref%".$ref,"$parts\n"));
+	      print (str_replace("%ref%",$ref,"$parts\n"));
      
 	    }		
 	}
