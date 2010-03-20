@@ -247,7 +247,7 @@ function submitForm()
 
 //
 
-function gbrowseCallback(gburl, data, status)
+function gbrowseCallback(gburl, data, status,nw)
 {
     if (status != 'success')
     {
@@ -258,8 +258,7 @@ function gbrowseCallback(gburl, data, status)
     $("#cover").hide();
     $("#infobox").hide();
 
-    var newWindow = window.open(gburl, '_blank');
-    newWindow.focus();
+    nw.focus();
 }
 
 function loadInGbrowse(dataurl,gburl)
@@ -272,11 +271,12 @@ function loadInGbrowse(dataurl,gburl)
     $("#cover").show();
     $("#infobox").show();
 
+    var nw =  window.open(gburl, '_blank');
     $.post(gburl,submit,
 	   function (data,status) 
 	   {
 	       // Lambda function for parameter passing
-	       gbrowseCallback(gburl,data,status);
+	       gbrowseCallback(gburl,data,status,nw);
 	   }
 	  );
 }
