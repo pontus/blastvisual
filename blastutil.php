@@ -108,15 +108,16 @@ function parse_gfffile($gene)
   $exonlines = array();
 
   $ids = array($gene);
-  $oldids = 0;
+  $oldids = array();
   
   while($ids != $oldids)
     {
+      $newids = array_diff($ids, $oldids);
       $oldids = $ids;
 
       // Go through all IDs we have and check if we have a matching line
      
-      foreach ($ids as $id)
+      foreach ($newids as $id)
 	{      
 	  // For each line in file
 	  foreach (preg_grep("/(Name|Parent|ID)=$id/",$f) as $line) 
