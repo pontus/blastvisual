@@ -372,8 +372,8 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		"strand_arrow=1\n\n";
 
 
-	      $parts = "reference=$ref\n" .
-		'"UserBlast" "' . $hit->Hit_def . '" ' ;
+	      $parts = "reference=%ref%\n" .
+		'"UserBlast" "%ref%" ' ;
 
 	      $first = 1;
 	      foreach($hit->Hit_hsps->Hsp as $hsp)
@@ -400,9 +400,15 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		      // Adjust coordinates per gff file?
 
 		      $diff = $to-$from;
+		      
+		      $from_coord = transform_coordinate($ref,$from); 
+		      $from = $from_coord[1];
+		      $to_coord = transform_coordinate($ref,$to);
+		      $to = $to_coord[1];
 
-		      $from = transform_coordinate($ref,$from);
-		      $to = transform_coordinate($ref,$to);
+		      // Adjust reference
+		      $ref = $to_coord[0];
+
 
 		      // Compare distance, if it has changed, introns interfere.
 
@@ -412,7 +418,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 			  // split this hsp.
 
 			  // Insert an extra HSP from from to the end of it's extron
-			  $upper = extron_limits($gene,$from);
+			  $upper = extron_limits($ref,$from);
 
 			  // FIXME: Handle case "not found" (false)
 
@@ -422,7 +428,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 			  // extron in between.
 
 			  // Set $from to the start of the extron $to belongs to.
-			  $tmp = extron_limits($gene,$to);
+			  $tmp = extron_limits($ref,$to);
 			  $from = $tmp[0];
 			}
 		    }
@@ -434,9 +440,9 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		}
 	      
 
-	      // Ok, created all the parts and collected the lengths
+	      // Ok, created all the parts and collected the lengths, now output (after adjusting reference)
 	      
-	      print ("$parts\n");
+	      print (str_replace("%ref%".$ref,"$parts\n"));
      
 	    }		
 	}
