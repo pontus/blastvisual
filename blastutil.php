@@ -195,7 +195,7 @@ function extron_limits($gene, $offseted_coord)
       $exons = parse_gfffile($gene);
     }
 
-  foreach($exons[1] as $current_exon)
+  foreach($exons[0] as $current_exon)
     {
       if (($offseted_coord >= $current_exon[0]) &&
 	  ($offseted_coord <= $current_exon[1]))
