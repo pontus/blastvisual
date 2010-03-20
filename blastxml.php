@@ -364,7 +364,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		}
 	      
 	      
-
+	      $actualref = $ref;
 
 
 	      print "[UserBlast]\n" .
@@ -407,7 +407,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		      $to = $to_coord[1];
 
 		      // Adjust reference
-		      $ref = $to_coord[0];
+		      $actualref = $to_coord[0];
 
 
 		      // Compare distance, if it has changed, introns interfere.
@@ -442,7 +442,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 	      // Ok, created all the parts and collected the lengths, now output (after adjusting reference)
 	      
-	      print (str_replace("%ref%",$ref,"$parts\n"));
+	      print (str_replace("%ref%",$actualref,"$parts\n"));
      
 	    }		
 	}
