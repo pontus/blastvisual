@@ -272,6 +272,8 @@ function loadInGbrowse(dataurl,gburl)
     $("#infobox").show();
 
     var nw =  window.open(gburl, '_blank');
+    self.focus();
+
     $.post(gburl,submit,
 	   function (data,status) 
 	   {
