@@ -272,10 +272,12 @@ function loadInGbrowse(dataurl,gburl)
     $("#cover").show();
     $("#infobox").show();
 
-    var currentwindow = window;
-    var nw =  window.open('', '_blank');
 
-    currentwindow.focus();
+    var nw =  window.open('', '_blank');
+    nw.blur();
+    window.focus();
+
+
 
     $.post(gburl,submit,
 	   function (data,status) 
