@@ -374,7 +374,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 
 	      $parts = "reference=%ref%\n" .
-		'"UserBlast" "Hit $ref" %ref%:' ;
+		'"UserBlast" "Hit ' . $ref . " %ref%:' ;
 
 	      $first = 1;
 	      foreach($hit->Hit_hsps->Hsp as $hsp)
