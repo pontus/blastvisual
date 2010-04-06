@@ -273,8 +273,8 @@ function loadInGbrowse(dataurl,gburl)
     $("#infobox").show();
 
 
-    var nw =  window.open('', '_blank');
-    nw.blur();
+    var nw =  window.open('javascript:window.opener.focus()', '_blank');
+
     window.focus();
 
 
