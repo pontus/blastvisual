@@ -120,7 +120,7 @@ function parse_gfffile($gene)
       foreach ($newids as $id)
 	{      
 	  // For each line in file
-	  foreach (preg_grep("/(Name|Parent|ID)=$id/",$f) as $line) 
+	  foreach (preg_grep("/=$id(;.*)*$/",$f) as $line) 
 	    {
 	      // Get ID
 	      $matches = array();
