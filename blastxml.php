@@ -369,7 +369,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 	      print "[UserBlast]\n" .
 		"glyph=segments\n" .
-		"key=Track for blast hit $ref\n"
+		"key=Track for blast hit $ref\n" .
 		"strand_arrow=1\n\n";
 
 
