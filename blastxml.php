@@ -369,11 +369,12 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 	      print "[UserBlast]\n" .
 		"glyph=segments\n" .
+		"key=Track for blast hit $ref\n"
 		"strand_arrow=1\n\n";
 
 
 	      $parts = "reference=%ref%\n" .
-		'"UserBlast" "%ref%" ' ;
+		'"UserBlast" "Hit $ref" %ref%:' ;
 
 	      $first = 1;
 	      foreach($hit->Hit_hsps->Hsp as $hsp)
