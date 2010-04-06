@@ -258,6 +258,7 @@ function gbrowseCallback(gburl, data, status,nw)
     $("#cover").hide();
     $("#infobox").hide();
 
+    nw.location = gburl;
     nw.focus();
 }
 
@@ -271,7 +272,7 @@ function loadInGbrowse(dataurl,gburl)
     $("#cover").show();
     $("#infobox").show();
 
-    var nw =  window.open(gburl, '_blank');
+    var nw =  window.open('', '_blank');
     self.focus();
 
     $.post(gburl,submit,
