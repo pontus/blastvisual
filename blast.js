@@ -255,11 +255,31 @@ function gbrowseCallback(gburl, data, status,nw)
 	    return;
     }
 
-    $("#cover").hide();
-    $("#infobox").hide();
 
-    nw.location = gburl;
-    nw.focus();
+    var nw =  window.open(gburl, '_blank');
+
+    if (!nw)
+	{
+	    $("#infobox").html("<a href='"+gburl+
+			       "' onclick='clickedGbrowse()'" +
+			       " target='_blank'>"+
+			       "You have a popup blocker interferring, " + 
+			       "please click here for Gbrowse.</a>.");
+
+	}
+    else
+	{
+	    $("#cover").hide();
+	    $("#infobox").hide();
+
+	}
+}
+
+function clickedGbrowse()
+{
+	    $("#cover").hide();
+	    $("#infobox").hide();
+	    return true;
 }
 
 function loadInGbrowse(dataurl,gburl)
@@ -270,12 +290,9 @@ function loadInGbrowse(dataurl,gburl)
     };
 
     $("#cover").show();
+    $("#infobox").html("Loading in Gbrowse, please wait.");
     $("#infobox").show();
 
-
-    var nw =  window.open('javascript:window.opener.focus()', '_blank');
-
-    window.focus();
 
 
 
