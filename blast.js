@@ -263,8 +263,8 @@ function gbrowseCallback(gburl, data, status)
 	    $("#infobox").html("<a href='"+gburl+
 			       "' onclick='clickedGbrowse()'" +
 			       " target='_blank'>"+
-			       "You have a popup blocker interferring, " + 
-			       "please click here for Gbrowse.</a>.");
+			       "You have a popup blocker interfering, " + 
+			       "please click here for Gbrowse.</a>");
 
 	}
     else
