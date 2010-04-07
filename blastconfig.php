@@ -31,7 +31,7 @@ $matrixprogs = array('blastp','blastx','tblastn','tblastx');
 // Gbrowse probably needs to run on the same "host" (from the browsers
 // point of view) for ajaxy reasons.
 
-$gbrowseurl = 'http://130.239.72.85/mgb2/gbrowse/popgeniev2';
+$gbrowseurl = 'http://130.239.72.85/mgb2/gbrowse/popgeniev2/';
 $gbrowseprefixes = array('Poptr1.1:');
 
 $frameshiftpenaltyprogs = array('blastx','tblastn');
