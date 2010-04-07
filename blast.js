@@ -247,7 +247,7 @@ function submitForm()
 
 //
 
-function gbrowseCallback(gburl, data, status,nw)
+function gbrowseCallback(gburl, data, status)
 {
     if (status != 'success')
     {
@@ -294,13 +294,11 @@ function loadInGbrowse(dataurl,gburl)
     $("#infobox").show();
 
 
-
-
     $.post(gburl,submit,
 	   function (data,status) 
 	   {
 	       // Lambda function for parameter passing
-	       gbrowseCallback(gburl,data,status,nw);
+	       gbrowseCallback(gburl,data,status);
 	   }
 	  );
 }
