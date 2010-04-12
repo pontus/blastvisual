@@ -247,13 +247,15 @@ function submitForm()
 
 //
 
-function gbrowseCallback(gburl, data, status)
+function gbrowseCallback2(gburl, data, status)
 {
     if (status != 'success')
     {
 	    alert("Sorry, couldn't show in gbrowse!");
 	    return;
     }
+    
+    $("#currently").html("Opening Gbrowse.");
 
 
     var nw =  window.open(gburl, '_blank');
@@ -266,6 +268,7 @@ function gbrowseCallback(gburl, data, status)
 			       "You have a popup blocker interfering, " + 
 			       "please click here for Gbrowse.</a>");
 
+	    $("#currently").html("");
 	}
     else
 	{
@@ -273,6 +276,34 @@ function gbrowseCallback(gburl, data, status)
 	    $("#infobox").hide();
 
 	}
+}
+
+
+function gbrowseCallback1(gburl, data, status)
+{
+    if (status != 'success')
+    {
+	    alert("Sorry, couldn't get track!");
+	    return;
+    }
+
+    $("#currently").html("Loading in Gbrowse");
+
+    var submit={
+        upload:    1,
+        upload_annotations:       data
+    };
+
+
+    $.post(gburl,submit,
+	   function (indata,instatus) 
+	   {
+	       // Lambda function for parameter passing
+	       gbrowseCallback2(gburl,indata,instatus);
+	   }
+	  );
+
+
 }
 
 function clickedGbrowse()
@@ -284,21 +315,18 @@ function clickedGbrowse()
 
 function loadInGbrowse(dataurl,gburl)
 {
-    var submit={
-        add_url:    1,
-        eurl:       dataurl
-    };
 
     $("#cover").show();
     $("#infobox").html("Loading in Gbrowse, please wait.");
+    $("#currently").html("Getting track");
     $("#infobox").show();
 
 
-    $.post(gburl,submit,
+    $.get(dataurl,"",
 	   function (data,status) 
 	   {
 	       // Lambda function for parameter passing
-	       gbrowseCallback(gburl,data,status);
+	       gbrowseCallback1(gburl,data,status);
 	   }
 	  );
 }
