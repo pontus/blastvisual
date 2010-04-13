@@ -290,8 +290,11 @@ function gbrowseCallback1(gburl, data, status)
     $("#currently").html("Loading in Gbrowse");
 
     var submit={
+	action: 'upload_file',
+	submit: 'Upload',
         upload:    1,
-        upload_annotations:       data
+	name: 'Hit in gbrowse',
+        edit_field:       data
     };
 
 
@@ -317,7 +320,7 @@ function loadInGbrowse(dataurl,gburl)
 {
 
     $("#cover").show();
-    $("#infobox").html("Loading in Gbrowse, please wait.");
+    $("#infobox").html("Loading in Gbrowse, please wait. <div id='currently'></div>");
     $("#currently").html("Getting track");
     $("#infobox").show();
 
