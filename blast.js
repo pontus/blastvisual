@@ -320,7 +320,11 @@ function loadInGbrowse(dataurl,gburl)
 {
 
     $("#cover").show();
+<<<<<<< HEAD
     $("#infobox").html("Loading in Gbrowse, please wait. <div id='currently'></div>");
+=======
+    $("#infobox").html("Loading in Gbrowse, please wait.");
+>>>>>>> c6ac5ab19d3c36ecf58593a6063f83595d6077a0
     $("#currently").html("Getting track");
     $("#infobox").show();
 
