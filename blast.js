@@ -289,10 +289,10 @@ function gbrowseCallback1(gburl, data, status)
 
     var formid = "upload_"+Math.floor(Math.random()*99999)
     $("#currently").html("Loading in Gbrowse "+
-			 "<form name='+"+formid+"+' action='" +gburl+"' style='display: none;' id='postform'>"+
+			 "<form name='"+formid+"+' method='post' action='" +gburl+"' style='display: none;' id='postform'>"+
 			 "<input type='text' name='action' value='upload_file'>"+
 			 "<input type='textarea' name='data' value='"+data+"'>"+
-			 "<input type='textarea' name='upload_id' value='"+formid+"'>"+
+			 "<input type='text' name='upload_id' value='"+formid+"'>"+
 			 "<input type='submit' value='Upload'>"+
 			 "</form>");
 
