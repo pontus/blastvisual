@@ -287,19 +287,27 @@ function gbrowseCallback1(gburl, data, status)
 	    return;
     }
 
-    var formid = "upload_"+Math.floor(Math.random()*99999)
-    $("#currently").html("Loading in Gbrowse "+
-			 "<form name='"+formid+"+' method='post' action='" +gburl+"' style='display: none;' id='postform'>"+
-			 "<input type='text' name='action' value='upload_file'>"+
-			 "<input type='textarea' name='data' value='"+data+"'>"+
-			 "<input type='text' name='upload_id' value='"+formid+"'>"+
-			 "<input type='submit' value='Upload'>"+
-			 "</form>");
+    var formid = "upload_"+Math.floor(Math.random()*99999);
+    $("#currently").html("Loading in Gbrowse");
 
-    $("#postform").submit();
-    alert("form submitted ");
+    var submit={
+	action: 'upload_file',
+	submit: 'Upload',
+        upload: 1,
+	upload_id: formid,
+	data: data,
+	name: 'Hit in gbrowse',
+    };
 
 
+    $.post(gburl,submit,
+	   function (indata,instatus)
+	   {
+	       // Lambda function for parameter passing
+	       gbrowseCallback2(gburl,indata,instatus);
+	   }
+	   );
+    
 }
 
 function clickedGbrowse()
