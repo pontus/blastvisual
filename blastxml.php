@@ -326,7 +326,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
   // Handle gbrowse track
 
-  // Output gff describing the selected hit
+  // Output BED describing the selected hit
 
 
   header("Content-type: text/plain");
@@ -373,35 +373,31 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 		"strand_arrow=1\n\n";
 
 
-	      $parts = "reference=%ref%\n" .
-		'"UserBlast" "Hit ' . $ref . '" %ref%:' ;
+	
 
-	      $first = 1;
+	      $hsps = array();
+ 
 	      foreach($hit->Hit_hsps->Hsp as $hsp)
 		{
 
-		  // Insert starting comma if needed
-		  if (!$first)
-		    {
-		      $parts = $parts . ',';
-		    }
-
-		  
-		  $first = 0;
-
-
 		  $hf = $hsp->xpath('Hsp_hit-from');
 		  $ht = $hsp->xpath('Hsp_hit-to');
-
+		  $st = $hsp->xpath('Hsp_score');
+		  $nt = $hsp->xpath('Hsp_num');
+		  
 		  $from = $hf[0];
 		  $to = $ht[0];
+		  $score = $st[0];
+		  $num = $nt[0];
+		  $extron = 1;
 
 		  if($adjust)
 		    {
 		      // Adjust coordinates per gff file?
 
-		      $diff = $to-$from;
-		      
+		      $length = $to-$from;
+
+		      $genecoord = $from;  // Keep track of untranslated position
 		      $from_coord = transform_coordinate($ref,$from); 
 		      $from = $from_coord[1];
 		      $to_coord = transform_coordinate($ref,$to);
@@ -413,7 +409,8 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 		      // Compare distance, if it has changed, introns interfere.
 
-		      if (($to-$from) != $diff) 
+		      while ($length >0 && 
+			     ($to-$from) != $length)
 			{
 			  // We cross at least one extron/intron border. Let's
 			  // split this hsp.
@@ -423,27 +420,33 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 
 			  // FIXME: Handle case "not found" (false)
 
-			  $parts = $parts . $from . '..' . $upper[1] . ',';
+			  $length = $length-($upper[1]-$from);
 
-			  // FIXME: We should probably check and insert HSPs for any
-			  // extron in between.
+			  $hsps[] = array($from,$upper[1],"HSP".$num."ex".$extron,$score);
+			  $extron = $extron+1;
 
-			  // Set $from to the start of the extron $to belongs to.
-			  $tmp = extron_limits($ref,$to);
-			  $from = $tmp[0];
+			  // Adjust untranslated coordinate
+			  $genecoord = $genecoord + $(upper[1]-$from);
+
+			  $tmp = transform_coordinate($ref,$genecoord); 
+			  $from = $tmp[1];
+
 			}
 		    }
 
 
-		  $parts = $parts . 
-		    $from . '..' . $to;
+		  $hsps[] = array($from,$to,"HSP" . $num . "ex" .$extron, $score);
 									    
 		}
 	      
 
-	      // Ok, created all the parts and collected the lengths, now output (after adjusting reference)
+
 	      
-	      print (str_replace("%ref%",$actualref,"$parts\n"));
+	      foreach ($hsps as $currenthsp) 
+		{
+		  print $actualref . " " .$currenthsp[0] . " " . $currenthsp[1] . " " . $currenthsp[2] . " " . $currenthsp[3] . "\n";
+		}
+
      
 	    }		
 	}
