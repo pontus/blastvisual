@@ -426,7 +426,7 @@ if ($_REQUEST['id'] != '' && $_REQUEST['op']=='gbrowse') {
 			  $extron = $extron+1;
 
 			  // Adjust untranslated coordinate
-			  $genecoord = $genecoord + $(upper[1]-$from);
+			  $genecoord = $genecoord + ($upper[1]-$from);
 
 			  $tmp = transform_coordinate($ref,$genecoord); 
 			  $from = $tmp[1];
