@@ -2,12 +2,12 @@
 
 infile="$1"
 
-if [ -r "$1" ]; then
+if [ -r "$infile" ]; then
   # Create quickload directory
-  mkdir ql || true;
+  mkdirhier -p ql/${infile%/*} || true;
 
-  cut -f 1 "$1" | sort -u | while read p; do
-    grep "^$p\s" "$1" > "ql/$1.$p"
+  cut -f 1 "$infile" | sort -u | while read p; do
+    grep "^$p\s" "$infile" > "ql/$infile.$p"
   done
 fi
 
