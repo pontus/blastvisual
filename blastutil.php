@@ -100,7 +100,12 @@ function parse_gfffile($gene)
 {
   global $config;
   $gfffile = $config['cdsgff'];
-  
+
+  if (file_exists('ql/' . $config['cdsgff'] . '.' . $gene))
+    {
+      $gfffile = 'ql/' . $config['cdsgff'] . '.' . $gene;
+    }
+
   $f = file($gfffile,FILE_SKIP_EMPTY_LINES);
   
   $exonsforgene = $gene;
